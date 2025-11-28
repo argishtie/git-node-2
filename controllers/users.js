@@ -1,27 +1,100 @@
+import moment from 'moment';
+
+import utils from '../services/utils.js';
+import * as usersModel from '../models/users.js';
+
+const { AUTH_SECRET } = process.env;
+
 export default {
-  login(req, res) {
+  async login(req, res, next) {
     try {
-      console.log(req.body);
+      const { email, password } = req.body;
+
+      if (!password || !email) {
+        res.status(422).json({
+          status: 'error',
+          message: 'email and password are required'
+        });
+        return;
+      }
+
+      const user = await usersModel.findUserByEmail(email);
+
+      if (!user) {
+        res.status(422).json({
+          status: 'error',
+          message: 'email or password are invalid',
+        });
+        return;
+      }
+
+      if (!usersModel.checkPassword(user.password, password)) {
+        res.status(422).json({
+          status: 'error',
+          message: 'email or password are invalid',
+        });
+        return;
+      }
+
+      const payload = JSON.stringify({
+        userId: user.id,
+        expiresIn: moment().add(2, 'minutes').toISOString(),
+      });
+
+      const token = utils.encrypt(payload, AUTH_SECRET);
+
       res.json({
         status: 'ok',
-        route: 'login'
+        token,
+        user,
       })
-    } catch (err) {
-      res.status(500).json(err)
+    } catch (e) {
+      next(e)
     }
   },
 
-  profile(req, res) {
+  async registration(req, res, next) {
     try {
-      console.log(req.body);
-      res.render('profile', {
-        title: "Profile",
-        user: {
-          name: req.query.userName || 'Valod'
-        }
+      const { username, password, email, address } = req.body;
+
+      if (!username || !password || !email) {
+        res.status(422).json({
+          status: 'error',
+          message: 'Username or password is required'
+        });
+        return;
+      }
+
+      const user = await usersModel.createUser({
+        username: username,
+        password: password,
+        email: email,
+        address: address || '-',
+      });
+
+      res.json({
+        status: 'ok',
+        user,
       })
-    } catch (err) {
-      res.status(500).json(err)
+    } catch (e) {
+      next(e)
+    }
+  },
+
+  async profile(req, res, next) {
+    try {
+      const user = await usersModel.findUserByID(req.userId);
+
+      // res.render('profile', {
+      //   title: "Profile",
+      //   user,
+      // })
+      res.json({
+        status: "ok",
+        user,
+      })
+    } catch (e) {
+      next(e)
     }
   }
 }

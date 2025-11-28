@@ -5,13 +5,7 @@ import posts from "./posts.js";
 
 const router = Router();
 
-/* GET home page. */
 router.get('/', (req, res, next) => {
-  // if(true){
-  //   next(new Error('Not Found uuuuuuuuu'));
-  //   return;
-  // }
-
   res.render('index', {
     title: 'Express NODE 2',
     userName: 'Valod',

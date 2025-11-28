@@ -1,9 +1,11 @@
-import createError from 'http-errors';
-import express from 'express';
 import path from 'path';
 import logger from 'morgan';
+import express from 'express';
+import createError from 'http-errors';
 
 import router from './routes/index.js';
+
+import './models/index.js';
 
 const app = express();
 
