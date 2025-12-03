@@ -7,5 +7,18 @@
     "address": "24/7 str. new yourk, bangladesh",
     "createdAt": "2025-11-28T12:20:00.381Z",
     "updatedAt": "2025-11-28T12:20:00.383Z"
+  },
+  {
+    "id": "019ae460-9b96-771c-b91c-51ec326dfa67",
+    "username": "valod",
+    "email": "test@test.com",
+    "password": "4b9b4e32729257bb6f0c1d78cd125b90",
+    "address": {
+      "city": "San Andreas",
+      "state": "CA",
+      "country": "USA"
+    },
+    "createdAt": "2025-12-03T13:22:07.895Z",
+    "updatedAt": "2025-12-03T13:22:07.895Z"
   }
 ]
