@@ -1,5 +1,32 @@
 const registrationForm = document.querySelector('#registration_form');
 
+(async () => {
+  const token = localStorage.getItem('token');
+
+  if (token) {
+    const data = await axios({
+      method: 'get',
+      url: '/users/profile',
+      headers: {
+        authorization: `${token}`
+      }
+    })
+      .then((res) => {
+        return { success: true, data: res.data };
+      })
+      .catch((err) => {
+        return { success: false, data: err };
+      });
+
+    if (data.success) {
+      location.href = "/users/views/profile"
+    } else {
+      localStorage.removeItem('token');
+      localStorage.removeItem('userData');
+    }
+  }
+})();
+
 if (registrationForm) {
   registrationForm.onsubmit = async (e) => {
     e.preventDefault();
@@ -52,6 +79,16 @@ function handlerError(e) {
       }
     }
     return { data: errors };
+  } else {
+    Toastify({
+      text: e?.response?.data.message,
+      duration: 2000,
+      close: true,
+      className: 'error',
+      gravity: "top", // `top` or `bottom`
+      position: "right", // `left`, `center` or `right`
+      stopOnFocus: true, // Prevents dismissing of toast on hover
+    }).showToast();
   }
 
   return { data: null };

@@ -5,11 +5,8 @@ import posts from "./posts.js";
 
 const router = Router();
 
-router.get('/', (req, res, next) => {
-  res.render('index', {
-    title: 'Express NODE 2',
-    userName: 'Valod',
-  });
+router.get('/', (req, res) => {
+  res.redirect('/users/views/profile');
 });
 
 router.use('/users', users);

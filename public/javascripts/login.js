@@ -1,5 +1,32 @@
 const loginForm = document.querySelector('#login_form');
 
+(async () => {
+  const token = localStorage.getItem('token');
+
+  if (token) {
+    const data = await axios({
+      method: 'get',
+      url: '/users/profile',
+      headers: {
+        authorization: `${token}`
+      }
+    })
+      .then((res) => {
+        return { success: true, data: res.data };
+      })
+      .catch((err) => {
+        return { success: false, data: err };
+      });
+
+    if (data.success) {
+      location.href = "/users/views/profile"
+    } else {
+      localStorage.removeItem('token');
+    }
+  }
+})();
+
+
 if (loginForm) {
   loginForm.onsubmit = async (e) => {
     e.preventDefault();
@@ -22,7 +49,11 @@ if (loginForm) {
       },
     }).catch(handlerError);
 
-    console.log(data)
+    if (data?.token) {
+      localStorage.setItem('token', data.token);
+      localStorage.setItem('userData', JSON.stringify(data?.user || {}));
+      location.href = `/users/views/profile`;
+    }
   }
 }
 

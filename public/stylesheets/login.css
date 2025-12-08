@@ -28,6 +28,7 @@ label {
 /* Style for all input fields */
 input[type="email"],
 input[type="password"],
+input[type="password"],
 input[type="text"] {
     width: 100%; /* Makes inputs fill the label width */
     padding: 10px;

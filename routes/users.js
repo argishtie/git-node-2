@@ -31,6 +31,10 @@ router.get('/views/registration', (req, res)=>{
 
 router.get('/views/login', (req, res)=>{
   res.render('login');
-})
+});
+
+router.get('/views/profile', (req, res)=>{
+  res.render('profile');
+});
 
 export default router;

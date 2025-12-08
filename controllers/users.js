@@ -30,7 +30,7 @@ export default {
 
       const payload = JSON.stringify({
         userId: user.id,
-        expiresIn: moment().add(2, 'minutes').toISOString(),
+        expiresIn: moment().add(20, 'minutes').toISOString(),
       });
 
       const token = utils.encrypt(payload, AUTH_SECRET);
