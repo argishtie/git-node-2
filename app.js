@@ -5,6 +5,7 @@ import createError from 'http-errors';
 
 import router from './routes/index.js';
 
+import './migrate.js';
 import './models/index.js';
 
 const app = express();
